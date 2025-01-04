@@ -27,6 +27,8 @@ class MAC:
 	def pack(self) -> bytes:
 		return bytes.fromhex(self.addr.replace(":", ""))
 
+	def __str__(self) -> str: return self.addr
+
 class IPv4:
 
 	# NOTE: `OWN_IP` irreliable at times
@@ -50,3 +52,5 @@ class IPv4:
 
 	def pack(self) -> bytes:
 		return socket.inet_aton(self.addr)
+
+	def __str__(self) -> str: return self.addr
