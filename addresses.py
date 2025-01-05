@@ -1,13 +1,14 @@
-import uuid, socket
+import os, socket, json
+from pathlib import Path
+
+addrcmd = json.loads(Path("addrcmd.json").read_text())
 
 class MAC:
 
 	# NOTE: `OWN_MAC` irreliable at times
 	@staticmethod
 	def OWN_MAC() -> str:
-		HEX = hex(uuid.getnode())[2:]
-		ADR = ":".join([HEX[i:i+2] for i in range(0, len(HEX), 2)])
-		return ADR
+		return os.popen(addrcmd["getmac"]).read().strip()
 
 	@staticmethod
 	def unpack(packed_mac: bytes) -> str:
@@ -34,7 +35,7 @@ class IPv4:
 	# NOTE: `OWN_IP` irreliable at times
 	@staticmethod
 	def OWN_IP() -> str:
-		return socket.gethostbyname(socket.gethostname())
+		return os.popen(addrcmd["getip"]).read().strip()
 
 	@staticmethod
 	def unpack(packed_ip: bytes) -> str:
@@ -54,3 +55,6 @@ class IPv4:
 		return socket.inet_aton(self.addr)
 
 	def __str__(self) -> str: return self.addr
+
+print(MAC.OWN_MAC())
+print(IPv4.OWN_IP())

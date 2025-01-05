@@ -1,0 +1,4 @@
+{
+	"getip" : "hostname -I",
+	"getmac": "ip link show | awk '/ether/ {print $2}'"
+}
